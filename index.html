@@ -36,18 +36,54 @@
             font-weight: 600;
         }
 
-        .character {
-            font-size: 8rem;
+        .emoji-cat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
             margin-bottom: 2rem;
-            animation: bounce 2s ease-in-out infinite;
+            animation: float 2s ease-in-out infinite;
         }
 
-        @keyframes bounce {
+        @keyframes float {
             0%, 100% {
                 transform: translateY(0);
             }
             50% {
-                transform: translateY(-20px);
+                transform: translateY(-15px);
+            }
+        }
+
+        .pointing-fingers {
+            font-size: 4rem;
+            display: flex;
+            gap: 0.5rem;
+            animation: point 1s ease-in-out infinite;
+        }
+
+        @keyframes point {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .kiss-face {
+            font-size: 6rem;
+            animation: wiggle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-5deg);
+            }
+            75% {
+                transform: rotate(5deg);
             }
         }
 
@@ -103,6 +139,65 @@
             font-size: 1.5rem;
             color: #333;
             font-weight: 600;
+            margin-top: 2rem;
+        }
+
+        .kissing-cats {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .cat-emoji {
+            font-size: 8rem;
+            animation: moveToKiss 1.5s ease-in-out;
+        }
+
+        .cat-emoji.cat1 {
+            animation: moveFromLeft 1.5s ease-in-out;
+        }
+
+        .cat-emoji.cat2 {
+            animation: moveFromRight 1.5s ease-in-out;
+        }
+
+        @keyframes moveFromLeft {
+            0% {
+                transform: translateX(-150px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes moveFromRight {
+            0% {
+                transform: translateX(150px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        .heart-explosion {
+            position: absolute;
+            font-size: 2rem;
+            animation: explode 2s ease-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes explode {
+            0% {
+                transform: translate(0, 0) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(1);
+                opacity: 0;
+            }
         }
 
         .audio-control {
@@ -129,6 +224,28 @@
             gap: 1rem;
             margin: 2rem 0;
         }
+
+        .teddy {
+            font-size: 3rem;
+            animation: bounce-teddy 1s ease-in-out infinite;
+        }
+
+        .teddy:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .teddy:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes bounce-teddy {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+        }
     </style>
 </head>
 <body>
@@ -137,7 +254,13 @@
     <div class="container">
         <div class="question-screen" id="questionScreen">
             <h1>Will you be my Valentine?????</h1>
-            <div class="character">🐱</div>
+            <div class="emoji-cat">
+                <div class="pointing-fingers">
+                    <span>👉</span>
+                    <span>👈</span>
+                </div>
+                <div class="kiss-face">😙</div>
+            </div>
             <div class="buttons-container">
                 <button class="btn btn-yes" id="yesBtn">Yes</button>
                 <button class="btn btn-no" id="noBtn">Pookie please...</button>
@@ -146,19 +269,46 @@
 
         <div class="success-screen" id="successScreen">
             <h1>Yay! 🎉</h1>
+            <div class="kissing-cats" id="kissingCats">
+                <div class="cat-emoji cat1">😘</div>
+                <div class="cat-emoji cat2">😘</div>
+            </div>
             <div class="teddy-container">
-                <div class="character" style="font-size: 5rem;">🧸</div>
-                <div class="character" style="font-size: 5rem;">🧸</div>
-                <div class="character" style="font-size: 5rem;">🧸</div>
+                <div class="teddy">🧸</div>
+                <div class="teddy">🧸</div>
+                <div class="teddy">🧸</div>
             </div>
             <p class="success-message">Knew you would say yes pookie!</p>
         </div>
     </div>
 
-    <!-- Note: You'll need to replace this with an actual audio file URL for Cardi B - WAP -->
-    <!-- Due to copyright, I'm using a placeholder. Upload your audio file and replace the src -->
+    <!-- 
+    ⭐ HOW TO ADD YOUR AUDIO FILE:
+    
+    Option 1: SAME FOLDER METHOD (Easiest)
+    1. Save this HTML file as "valentine.html" or "index.html"
+    2. Put your audio file (e.g., "wap.mp3") in the SAME folder
+    3. Change the src below to just the filename: src="wap.mp3"
+    
+    Option 2: SUBFOLDER METHOD
+    1. Create a folder called "audio" next to your HTML file
+    2. Put your audio file inside: audio/wap.mp3
+    3. Change the src below to: src="audio/wap.mp3"
+    
+    Example structure:
+    valentine-website/
+    ├── index.html (or valentine.html)
+    └── wap.mp3  (your audio file - same folder)
+    
+    OR
+    
+    valentine-website/
+    ├── index.html
+    └── audio/
+        └── wap.mp3
+    -->
     <audio id="bgMusic" loop>
-        <source src="" type="audio/mpeg">
+        <source src="wap.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -168,6 +318,7 @@
         const successScreen = document.getElementById('successScreen');
         const bgMusic = document.getElementById('bgMusic');
         const audioControl = document.querySelector('.audio-control');
+        const kissingCats = document.getElementById('kissingCats');
 
         let musicPlaying = false;
 
@@ -177,13 +328,27 @@
                     audioControl.textContent = '🔊 Music: ON';
                     musicPlaying = true;
                 }).catch(e => {
-                    audioControl.textContent = '🔊 Music: Click to Play';
-                    alert('Please add an audio file! Replace the audio src in the HTML code.');
+                    audioControl.textContent = '❌ Add audio file!';
+                    console.log('Add your MP3 file in the same folder as this HTML file');
                 });
             } else {
                 bgMusic.pause();
                 audioControl.textContent = '🔇 Music: OFF';
                 musicPlaying = false;
+            }
+        }
+
+        function createHeartExplosion() {
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-explosion');
+                heart.textContent = ['💕', '💖', '💗', '💓', '💝'][Math.floor(Math.random() * 5)];
+                heart.style.setProperty('--tx', `${(Math.random() - 0.5) * 300}px`);
+                heart.style.setProperty('--ty', `${(Math.random() - 0.5) * 300}px`);
+                heart.style.animationDelay = `${Math.random() * 0.5}s`;
+                kissingCats.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 2000);
             }
         }
 
@@ -205,11 +370,9 @@
             if (noClickCount < noMessages.length) {
                 noBtn.textContent = noMessages[noClickCount];
                 
-                // Increase Yes button size
                 yesBtnScale += 0.4;
                 yesBtn.style.transform = `scale(${yesBtnScale})`;
             } else {
-                // Last option - make Yes button fill the whole screen
                 yesBtn.style.position = 'fixed';
                 yesBtn.style.top = '0';
                 yesBtn.style.left = '0';
@@ -225,6 +388,11 @@
         yesBtn.addEventListener('click', () => {
             questionScreen.style.display = 'none';
             successScreen.style.display = 'block';
+            
+            setTimeout(() => {
+                createHeartExplosion();
+                setInterval(createHeartExplosion, 2000);
+            }, 1000);
         });
     </script>
 </body>
