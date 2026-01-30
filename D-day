@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffc0cb;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #d63447;
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        .character {
+            font-size: 8rem;
+            margin-bottom: 2rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            align-items: center;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-yes {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-yes:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .btn-no {
+            background: #ff4444;
+            color: white;
+        }
+
+        .btn-no:hover {
+            background: #cc0000;
+        }
+
+        .success-screen {
+            display: none;
+        }
+
+        .success-screen h1 {
+            font-size: 2.5rem;
+            color: #4caf50;
+            margin-bottom: 2rem;
+        }
+
+        .success-message {
+            font-size: 1.5rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .audio-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: #333;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .audio-control:hover {
+            background: rgba(255, 255, 255, 1);
+        }
+
+        .teddy-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="audio-control" onclick="toggleAudio()">🔊 Music: Click to Play</div>
+
+    <div class="container">
+        <div class="question-screen" id="questionScreen">
+            <h1>Will you be my Valentine?????</h1>
+            <div class="character">🐱</div>
+            <div class="buttons-container">
+                <button class="btn btn-yes" id="yesBtn">Yes</button>
+                <button class="btn btn-no" id="noBtn">Pookie please...</button>
+            </div>
+        </div>
+
+        <div class="success-screen" id="successScreen">
+            <h1>Yay! 🎉</h1>
+            <div class="teddy-container">
+                <div class="character" style="font-size: 5rem;">🧸</div>
+                <div class="character" style="font-size: 5rem;">🧸</div>
+                <div class="character" style="font-size: 5rem;">🧸</div>
+            </div>
+            <p class="success-message">Knew you would say yes pookie!</p>
+        </div>
+    </div>
+
+    <!-- Note: You'll need to replace this with an actual audio file URL for Cardi B - WAP -->
+    <!-- Due to copyright, I'm using a placeholder. Upload your audio file and replace the src -->
+    <audio id="bgMusic" loop>
+        <source src="" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const questionScreen = document.getElementById('questionScreen');
+        const successScreen = document.getElementById('successScreen');
+        const bgMusic = document.getElementById('bgMusic');
+        const audioControl = document.querySelector('.audio-control');
+
+        let musicPlaying = false;
+
+        function toggleAudio() {
+            if (bgMusic.paused) {
+                bgMusic.play().then(() => {
+                    audioControl.textContent = '🔊 Music: ON';
+                    musicPlaying = true;
+                }).catch(e => {
+                    audioControl.textContent = '🔊 Music: Click to Play';
+                    alert('Please add an audio file! Replace the audio src in the HTML code.');
+                });
+            } else {
+                bgMusic.pause();
+                audioControl.textContent = '🔇 Music: OFF';
+                musicPlaying = false;
+            }
+        }
+
+        const noMessages = [
+            "Pookie please...",
+            "Are you positive pookie?",
+            "Please just think about it!",
+            "If you say no I'll be really sad",
+            "I will be very sad",
+            "I will be very very sad"
+        ];
+
+        let noClickCount = 0;
+        let yesBtnScale = 1;
+
+        noBtn.addEventListener('click', () => {
+            noClickCount++;
+            
+            if (noClickCount < noMessages.length) {
+                noBtn.textContent = noMessages[noClickCount];
+                
+                // Increase Yes button size
+                yesBtnScale += 0.4;
+                yesBtn.style.transform = `scale(${yesBtnScale})`;
+            } else {
+                // Last option - make Yes button fill the whole screen
+                yesBtn.style.position = 'fixed';
+                yesBtn.style.top = '0';
+                yesBtn.style.left = '0';
+                yesBtn.style.width = '100vw';
+                yesBtn.style.height = '100vh';
+                yesBtn.style.borderRadius = '0';
+                yesBtn.style.fontSize = '5rem';
+                yesBtn.style.zIndex = '1000';
+                noBtn.style.display = 'none';
+            }
+        });
+
+        yesBtn.addEventListener('click', () => {
+            questionScreen.style.display = 'none';
+            successScreen.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
